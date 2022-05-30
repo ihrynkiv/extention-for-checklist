@@ -1,4 +1,4 @@
-const BASE_URL = 'https://ihrynkiv.github.io/checklist'
+const BASE_URL = 'http://localhost:3000/checklist'
 
 const getCurrentTabData = (tabs) => {
     const url = tabs[0].url
