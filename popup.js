@@ -1,4 +1,4 @@
-const BASE_URL = 'localhost:3000'
+const BASE_URL = 'https://ihrynkiv.github.io/checklist'
 
 const getCurrentTabData = (tabs) => {
     const url = tabs[0].url
@@ -13,14 +13,13 @@ const getCurrentTabData = (tabs) => {
 chrome.tabs.query({}, function(tabs) {
     const foundTab = tabs.find(tab => {
         let domain = (new URL(tab.url));
-        return domain.origin.includes(BASE_URL)
+        return BASE_URL.includes(domain.origin)
     })
 
     if (foundTab) {
-        const origin = new URL(foundTab.url).origin
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
             const {url, author, name, repo} = getCurrentTabData(tabs)
-            chrome.tabs.update(foundTab.id, {highlighted: true, url: `${origin}?url=${url}&name=${name}&author=${author}&repo=${repo}`});
+            chrome.tabs.update(foundTab.id, {highlighted: true, url: `${BASE_URL}?url=${url}&name=${name}&author=${author}&repo=${repo}`});
         });
     } else {
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
