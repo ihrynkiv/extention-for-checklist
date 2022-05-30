@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/checklist'
+const BASE_URL = 'https://ihrynkiv.github.io/checklist'
 
 const getCurrentTabData = (tabs) => {
     const url = tabs[0].url
@@ -19,12 +19,26 @@ chrome.tabs.query({}, function(tabs) {
     if (foundTab) {
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
             const {url, author, name, repo} = getCurrentTabData(tabs)
-            chrome.tabs.update(foundTab.id, {highlighted: true, url: `${BASE_URL}?url=${url}&name=${name}&author=${author}&repo=${repo}`});
+            url.includes('github.com') ?
+            chrome.tabs.update(foundTab.id, {
+                highlighted: true,
+                url: `${BASE_URL}?url=${url}&name=${name}&author=${author}&repo=${repo}`
+            }) :
+            chrome.tabs.update(foundTab.id, {
+                highlighted: true,
+                url: BASE_URL
+            })
         });
     } else {
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
             const {url, author, name, repo} = getCurrentTabData(tabs)
-            chrome.tabs.create({url: `${BASE_URL}?url=${url}&name=${name}&author=${author}&repo=${repo}`});
+            url.includes('github.com') ?
+                chrome.tabs.create({
+                    url: `${BASE_URL}?url=${url}&name=${name}&author=${author}&repo=${repo}`
+                }) :
+                chrome.tabs.create({
+                    url: BASE_URL
+                })
         });
     }
 } );
